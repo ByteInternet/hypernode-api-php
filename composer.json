@@ -2,6 +2,7 @@
     "name": "hypernode/api-client",
     "description": "Hypernode API Client for PHP",
     "type": "library",
+    "license": "MIT",
     "autoload": {
         "psr-4": {
             "Hypernode\\Api\\": "src/"
