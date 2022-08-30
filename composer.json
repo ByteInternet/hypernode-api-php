@@ -1,0 +1,28 @@
+{
+    "name": "hypernode/api-client",
+    "description": "Hypernode API Client for PHP",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "Hypernode\\Api\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Hypernode"
+        }
+    ],
+    "require": {
+        "ext-curl": "*",
+        "ext-json": "*",
+        "symfony/polyfill-php80": "^1.0",
+        "psr/http-client-implementation": "^1.0",
+        "php-http/client-common": "^2.5",
+        "php-http/discovery": "^1.14"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.9",
+        "guzzlehttp/guzzle": "^7.4",
+        "nikic/php-parser": "^4.14"
+    }
+}
