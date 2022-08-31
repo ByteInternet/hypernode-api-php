@@ -30,13 +30,12 @@ class Job extends AbstractResource
     }
 
     /**
-     * Refresh the job data, return true when job has not completed yet, return false if job has completed.
-     * Useful to run this command like:
+     * Refresh the job data. Can be used to wait for a job to be completed, like:
      * while (!$job->completed()) {
      *     $job->refresh();
      * }
      */
-    public function refresh(): bool
+    public function refresh()
     {
         $response = $this->client->api->get($this->url);
 
@@ -44,7 +43,7 @@ class Job extends AbstractResource
             $this->data = [];
             $this->exists = false;
             $this->running = false;
-            return true;
+            return;
         }
 
         if ($response->getStatusCode() === 303) {
@@ -52,7 +51,7 @@ class Job extends AbstractResource
             $this->exists = true;
             $this->running = false;
             $this->complete = true;
-            return false;
+            return;
         }
 
         $this->client->maybeThrowApiExceptions($response);
@@ -60,8 +59,6 @@ class Job extends AbstractResource
         $this->data = $this->client->getJsonFromResponse($response);
         $this->exists = true;
         $this->running = true;
-
-        return false;
     }
 
     public function exists(): bool

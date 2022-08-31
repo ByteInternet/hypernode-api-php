@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Hypernode\Api;
 
 use Http\Client\Common\HttpMethodsClient;
+use Http\Client\Common\HttpMethodsClientInterface;
 use Hypernode\Api\Exception\HypernodeApiClientException;
 use Hypernode\Api\Exception\HypernodeApiServerException;
 use Hypernode\Api\Service\App;
@@ -15,11 +16,11 @@ class HypernodeClient
 {
     public const VERSION = '0.1.0';
 
-    public HttpMethodsClient $api;
+    public HttpMethodsClientInterface $api;
     public App $app;
     public Settings $settings;
 
-    public function __construct(HttpMethodsClient $apiClient)
+    public function __construct(HttpMethodsClientInterface $apiClient)
     {
         $this->api = $apiClient;
         $this->app = new App($this);

@@ -22,7 +22,6 @@ class Settings extends AbstractService
 
         if ($response->getStatusCode() === 202) {
             $job = new Job($this->client, $response->getHeaderLine('Location'));
-            $job->refresh();
             return $job;
         }
 
