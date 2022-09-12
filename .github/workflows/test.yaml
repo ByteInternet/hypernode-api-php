@@ -1,0 +1,25 @@
+name: Run tests for PR
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+
+jobs:
+  code_quality:
+    strategy:
+      matrix:
+        php_version: [7.4, 8.0, 8.1]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout hypernode-deploy
+        uses: actions/checkout@v3
+      - name: Install PHP
+        uses: shivammathur/setup-php@2.21.1
+        with:
+          php-version: ${{ matrix.php_version }}
+          tools: composer:v2
+      - name: Install dependencies
+        run: composer update --prefer-dist --no-progress --no-suggest
+      - name: Run PHP unit
+        run: php vendor/bin/phpunit tests/unit
