@@ -13,7 +13,7 @@ class ResponseException extends Exception
 
     public function __construct(ResponseInterface $response)
     {
-        parent::__construct();
+        parent::__construct((string)$response->getBody(), $response->getStatusCode());
 
         $this->response = $response;
     }

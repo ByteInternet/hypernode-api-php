@@ -8,6 +8,7 @@ use Http\Client\Common\HttpMethodsClientInterface;
 use Hypernode\Api\Exception\HypernodeApiClientException;
 use Hypernode\Api\Exception\HypernodeApiServerException;
 use Hypernode\Api\Service\App;
+use Hypernode\Api\Service\EphemeralApp;
 use Hypernode\Api\Service\Logbook;
 use Hypernode\Api\Service\Settings;
 use Psr\Http\Message\ResponseInterface;
@@ -18,6 +19,7 @@ class HypernodeClient
 
     public HttpMethodsClientInterface $api;
     public App $app;
+    public EphemeralApp $ephemeralApp;
     public Settings $settings;
     public Logbook $logbook;
 
@@ -25,6 +27,7 @@ class HypernodeClient
     {
         $this->api = $apiClient;
         $this->app = new App($this);
+        $this->ephemeralApp = new EphemeralApp($this);
         $this->settings = new Settings($this);
         $this->logbook = new Logbook($this);
     }
