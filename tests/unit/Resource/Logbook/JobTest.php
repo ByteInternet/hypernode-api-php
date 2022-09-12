@@ -6,6 +6,7 @@ namespace Hypernode\Api\Resource\Logbook;
 
 use GuzzleHttp\Psr7\Response;
 use Hypernode\Api\HypernodeClientTestCase;
+use Hypernode\Api\Resource\AbstractResource;
 
 class JobTest extends HypernodeClientTestCase
 {
@@ -17,6 +18,11 @@ class JobTest extends HypernodeClientTestCase
         parent::setUp();
         $this->jobUrl = "https://api.hypernode.com/logbook/v1/jobs/abcd/";
         $this->job = new Job($this->client, $this->jobUrl);
+    }
+
+    public function testIsInstanceOfAbstractResource()
+    {
+        $this->assertInstanceOf(AbstractResource::class, $this->job);
     }
 
     public function testRefresh()

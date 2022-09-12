@@ -21,10 +21,11 @@
     "require": {
         "ext-curl": "*",
         "ext-json": "*",
-        "symfony/polyfill-php80": "^1.0",
+        "nesbot/carbon": "^2.0",
         "psr/http-client-implementation": "^1.0",
         "php-http/client-common": "^2.5",
-        "php-http/discovery": "^1.14"
+        "php-http/discovery": "^1.14",
+        "symfony/polyfill-php80": "^1.0"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.9",

@@ -9,6 +9,7 @@ use Hypernode\Api\Exception\HypernodeApiClientException;
 use Hypernode\Api\Exception\HypernodeApiServerException;
 use Hypernode\Api\Service\App;
 use Hypernode\Api\Service\EphemeralApp;
+use Hypernode\Api\Service\Logbook;
 use Hypernode\Api\Service\Settings;
 use Psr\Http\Message\ResponseInterface;
 
@@ -20,6 +21,7 @@ class HypernodeClient
     public App $app;
     public EphemeralApp $ephemeralApp;
     public Settings $settings;
+    public Logbook $logbook;
 
     public function __construct(HttpMethodsClientInterface $apiClient)
     {
@@ -27,6 +29,7 @@ class HypernodeClient
         $this->app = new App($this);
         $this->ephemeralApp = new EphemeralApp($this);
         $this->settings = new Settings($this);
+        $this->logbook = new Logbook($this);
     }
 
     public function getJsonFromResponse(ResponseInterface $response)
