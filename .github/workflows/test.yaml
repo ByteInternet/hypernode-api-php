@@ -1,6 +1,9 @@
 name: Run tests for PR
 on:
   pull_request:
+  push:
+    branches:
+      - master
 
 jobs:
   code_quality:
