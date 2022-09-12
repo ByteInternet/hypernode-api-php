@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Hypernode\Api;
 
-use Http\Client\Common\HttpMethodsClient;
 use Http\Client\Common\HttpMethodsClientInterface;
 use Hypernode\Api\Exception\HypernodeApiClientException;
 use Hypernode\Api\Exception\HypernodeApiServerException;
 use Hypernode\Api\Service\App;
+use Hypernode\Api\Service\Logbook;
 use Hypernode\Api\Service\Settings;
 use Psr\Http\Message\ResponseInterface;
 
@@ -19,12 +19,14 @@ class HypernodeClient
     public HttpMethodsClientInterface $api;
     public App $app;
     public Settings $settings;
+    public Logbook $logbook;
 
     public function __construct(HttpMethodsClientInterface $apiClient)
     {
         $this->api = $apiClient;
         $this->app = new App($this);
         $this->settings = new Settings($this);
+        $this->logbook = new Logbook($this);
     }
 
     public function getJsonFromResponse(ResponseInterface $response)
