@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Hypernode\Api\Service;
 
 use GuzzleHttp\Psr7\Response;
@@ -20,10 +22,10 @@ class SettingsTest extends HypernodeClientTestCase
         $this->assertNull($job);
         $this->assertEquals('PATCH', $request->getMethod());
         $this->assertEquals('/v2/app/johndoe/', $request->getUri());
-        $this->assertJson($request->getBody());
+        $this->assertJson((string)$request->getBody());
         $this->assertEquals(
             ['php_version' => '8.1'],
-            json_decode($request->getBody(), true)
+            json_decode((string)$request->getBody(), true)
         );
     }
 
@@ -41,10 +43,10 @@ class SettingsTest extends HypernodeClientTestCase
         $this->assertNotNull($job);
         $this->assertEquals('PATCH', $request->getMethod());
         $this->assertEquals('/v2/app/johndoe/', $request->getUri());
-        $this->assertJson($request->getBody());
+        $this->assertJson((string)$request->getBody());
         $this->assertEquals(
             ['php_version' => '8.1'],
-            json_decode($request->getBody(), true)
+            json_decode((string)$request->getBody(), true)
         );
     }
 
@@ -68,13 +70,13 @@ class SettingsTest extends HypernodeClientTestCase
         $this->assertNotNull($job);
         $this->assertEquals('PATCH', $request->getMethod());
         $this->assertEquals('/v2/app/johndoe/', $request->getUri());
-        $this->assertJson($request->getBody());
+        $this->assertJson((string)$request->getBody());
         $this->assertEquals(
             [
                 'php_version' => '8.1',
                 'nodejs_version' => '18'
             ],
-            json_decode($request->getBody(), true)
+            json_decode((string)$request->getBody(), true)
         );
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Hypernode\Api\Resource\Logbook;
 
 use GuzzleHttp\Psr7\Response;
