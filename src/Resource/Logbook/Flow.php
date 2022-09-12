@@ -19,6 +19,7 @@ class Flow extends AbstractResource
     public const STATE_SUCCESS = 'success';
     public const STATE_REVERTED = 'reverted';
     public const STATE_RUNNING = 'running';
+    public const STATE_WAITING = 'waiting';
 
     protected array $dateAttributes = [
         'created_at',
@@ -43,5 +44,10 @@ class Flow extends AbstractResource
     public function isRunning(): bool
     {
         return $this->state === self::STATE_RUNNING;
+    }
+
+    public function isWaiting(): bool
+    {
+        return $this->state === self::STATE_WAITING;
     }
 }
