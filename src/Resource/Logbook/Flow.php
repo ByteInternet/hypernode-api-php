@@ -48,6 +48,6 @@ class Flow extends AbstractResource
 
     public function isWaiting(): bool
     {
-        return $this->state === self::STATE_WAITING;
+        return empty($this->state) || $this->state === self::STATE_WAITING;
     }
 }

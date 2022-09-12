@@ -57,6 +57,12 @@ class FlowTest extends TestCase
         $this->assertFalse($flow->isRunning());
     }
 
+    public function testIsWaitingReturnsTrueForEmptyState()
+    {
+        $flow = new Flow(['state' => null]);
+        $this->assertTrue($flow->isWaiting());
+    }
+
     public function testIsWaitingReturnsTrue()
     {
         $flow = new Flow(['state' => 'waiting']);
