@@ -42,7 +42,7 @@ class EphemeralApp extends AbstractService
     {
         $url = sprintf(App::V2_APP_CANCEL_URL, $app);
 
-        $response = $this->client->api->delete($url);
+        $response = $this->client->api->post($url);
 
         $this->client->maybeThrowApiExceptions($response);
     }
