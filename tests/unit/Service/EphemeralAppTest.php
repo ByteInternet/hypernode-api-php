@@ -62,7 +62,7 @@ class EphemeralAppTest extends HypernodeClientTestCase
         $this->client->ephemeralApp->cancel('johndoe-eph123456');
 
         $request = $this->responses->getLastRequest();
-        $this->assertEquals('DELETE', $request->getMethod());
+        $this->assertEquals('POST', $request->getMethod());
         $this->assertEquals('/v2/app/johndoe-eph123456/cancel/', $request->getUri());
     }
 
