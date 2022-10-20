@@ -7,19 +7,19 @@ namespace Hypernode\Api\Service;
 use Hypernode\Api\Exception\HypernodeApiClientException;
 use Hypernode\Api\Exception\HypernodeApiServerException;
 
-class EphemeralApp extends AbstractService
+class BrancherApp extends AbstractService
 {
     /**
-     * Create an ephemeral app for given parent app.
+     * Create an brancher app for given parent app.
      *
      * @param string $app Name of the parent app
-     * @return string Name of the ephemeral app
+     * @return string Name of the brancher app
      * @throws HypernodeApiClientException
      * @throws HypernodeApiServerException
      */
     public function create(string $app): string
     {
-        $url = sprintf(App::V2_APP_EPHEMERAL_URL, $app);
+        $url = sprintf(App::V2_APP_BRANCHER_URL, $app);
 
         $response = $this->client->api->post($url);
 
@@ -31,9 +31,9 @@ class EphemeralApp extends AbstractService
     }
 
     /**
-     * Cancel an ephemeral app.
+     * Cancel an brancher app.
      *
-     * @param string $app Name of the ephemeral app
+     * @param string $app Name of the brancher app
      * @return void
      * @throws HypernodeApiClientException
      * @throws HypernodeApiServerException
