@@ -49,4 +49,4 @@ Here's a list of Hypernode API features implemented in the client.
 
 - Updating one or multiple Hypernode settings at once.
 - Querying/polling the logbook for the status of a job.
-- Creating and cancelling Ephemeral Hypernode instances.
+- Creating and cancelling Brancher Hypernode instances.
