@@ -19,7 +19,7 @@ A full list of implementations, can be [found here](https://packagist.org/provid
 
 ### Acquiring an API token
 
-An API token can be requested at support@hypernode.com.
+Each Hypernode has an API token associated with it, you can use that to talk to the API directly. You can find the token in `/etc/hypernode/hypernode_api_token`. For API tokens with special permissions please contact support@hypernode.com.
 
 ### Using the client
 
