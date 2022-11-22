@@ -10,18 +10,19 @@ use Hypernode\Api\Exception\HypernodeApiServerException;
 class BrancherApp extends AbstractService
 {
     /**
-     * Create an brancher app for given parent app.
+     * Create a brancher app for given parent app.
      *
      * @param string $app Name of the parent app
+     * @param array|null $data Extra data to be provided
      * @return string Name of the brancher app
      * @throws HypernodeApiClientException
      * @throws HypernodeApiServerException
      */
-    public function create(string $app): string
+    public function create(string $app, ?array $data = null): string
     {
         $url = sprintf(App::V2_APP_BRANCHER_URL, $app);
 
-        $response = $this->client->api->post($url);
+        $response = $this->client->api->post($url, [], $data ? json_encode($data) : null);
 
         $this->client->maybeThrowApiExceptions($response);
 
