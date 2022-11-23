@@ -8,7 +8,7 @@ use Carbon\Carbon;
 
 class AbstractResource
 {
-    protected array $data;
+    protected array $data = [];
     protected array $dateAttributes = [];
 
     public function __get(string $name)
