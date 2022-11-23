@@ -29,6 +29,32 @@ class BrancherAppTest extends HypernodeClientTestCase
         $this->assertEquals('johndoe-eph123456', $brancherAppName);
     }
 
+    public function testCreateBrancherAppWithData()
+    {
+        $this->responses->append(
+            new Response(200, [], json_encode([
+                'name' => 'johndoe-eph123456',
+                'parent' => 'johndoe',
+                'type' => 'brancher',
+            ])),
+        );
+
+        $brancherAppName = $this->client->brancherApp->create(
+            'johndoe',
+            ['labels' => ['mybranchernode', 'mylabel=myvalue']]
+        );
+
+        $request = $this->responses->getLastRequest();
+        $this->assertEquals('POST', $request->getMethod());
+        $this->assertEquals('/v2/app/johndoe/brancher/', $request->getUri());
+        $this->assertEquals('johndoe-eph123456', $brancherAppName);
+        $this->assertJson((string)$request->getBody());
+        $this->assertEquals(
+            ['labels' => ['mybranchernode', 'mylabel=myvalue']],
+            json_decode((string)$request->getBody(), true)
+        );
+    }
+
     public function testCreateBrancherAppRaisesClientExceptions()
     {
         $badRequestResponse = new Response(400, [], json_encode([
