@@ -11,6 +11,7 @@ use Hypernode\Api\Resource\AbstractResource;
  * @property-read string $name
  * @property-read string $type
  * @property-read string|null $parent
+ * @property-read string[] $labels
  */
 class App extends AbstractResource
 {
