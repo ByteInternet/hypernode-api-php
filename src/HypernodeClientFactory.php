@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Hypernode\Api;
 
+use Composer\InstalledVersions;
 use Http\Client\Common\HttpMethodsClient;
 use Http\Client\Common\Plugin\AddHostPlugin;
 use Http\Client\Common\Plugin\AddPathPlugin;
@@ -21,7 +22,10 @@ class HypernodeClientFactory
     {
         $httpHeaders = [
             'Authorization' => sprintf('Token %s', $authToken),
-            'User-Agent' => sprintf('Hypernode API PHP Client v%s', HypernodeClient::VERSION),
+            'User-Agent' => sprintf(
+                'Hypernode API PHP Client v%s',
+                InstalledVersions::getVersion('hypernode/api-client'),
+            ),
             'Accept' => 'application/json',
             'Content-Type' => 'application/json',
         ];

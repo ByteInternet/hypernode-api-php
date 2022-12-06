@@ -19,6 +19,7 @@
         }
     ],
     "require": {
+        "composer-runtime-api": "^2.0",
         "ext-curl": "*",
         "ext-json": "*",
         "nesbot/carbon": "^2.0",

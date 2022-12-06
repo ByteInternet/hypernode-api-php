@@ -15,8 +15,6 @@ use Psr\Http\Message\ResponseInterface;
 
 class HypernodeClient
 {
-    public const VERSION = '0.1.0';
-
     public HttpMethodsClientInterface $api;
     public App $app;
     public BrancherApp $brancherApp;
