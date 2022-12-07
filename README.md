@@ -50,3 +50,9 @@ Here's a list of Hypernode API features implemented in the client.
 - Updating one or multiple Hypernode settings at once.
 - Querying/polling the logbook for the status of a job.
 - Creating and cancelling Brancher Hypernode instances.
+
+## Related projects
+
+- The official [Hypernode API Python Client](https://github.com/byteinternet/hypernode-api-python)
+- The official [Hypernode Deploy](https://github.com/byteinternet/hypernode-deploy-configuration) tool
+- The official [Hypernode Docker](https://github.com/byteinternet/hypernode-docker) image
