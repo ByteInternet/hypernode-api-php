@@ -47,6 +47,7 @@ while ($job && !$job->completed()) {
 
 Here's a list of Hypernode API features implemented in the client.
 
+- Listing Hypernodes related to your API key
 - Updating one or multiple Hypernode settings at once.
 - Querying/polling the logbook for the status of a job.
 - Creating and cancelling Brancher Hypernode instances.
