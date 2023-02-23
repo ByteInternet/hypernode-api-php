@@ -25,7 +25,7 @@ class BrancherAppTest extends HypernodeClientTestCase
 
         $request = $this->responses->getLastRequest();
         $this->assertEquals('POST', $request->getMethod());
-        $this->assertEquals('/v2/app/johndoe/brancher/', $request->getUri());
+        $this->assertEquals('/v2/brancher/app/johndoe/', $request->getUri());
         $this->assertEquals('johndoe-eph123456', $brancherAppName);
     }
 
@@ -46,7 +46,7 @@ class BrancherAppTest extends HypernodeClientTestCase
 
         $request = $this->responses->getLastRequest();
         $this->assertEquals('POST', $request->getMethod());
-        $this->assertEquals('/v2/app/johndoe/brancher/', $request->getUri());
+        $this->assertEquals('/v2/brancher/app/johndoe/', $request->getUri());
         $this->assertEquals('johndoe-eph123456', $brancherAppName);
         $this->assertJson((string)$request->getBody());
         $this->assertEquals(
