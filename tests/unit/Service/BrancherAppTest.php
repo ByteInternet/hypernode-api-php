@@ -11,6 +11,49 @@ use Hypernode\Api\HypernodeClientTestCase;
 
 class BrancherAppTest extends HypernodeClientTestCase
 {
+    public function testListBrancherApp()
+    {
+        $this->responses->append(
+            new Response(200, [], json_encode([
+                'name' => 'johndoe-eph123456',
+                'parent' => 'johndoe',
+                'type' => 'brancher',
+                'branchers' => []
+            ])),
+        );
+
+        $branchers = $this->client->brancherApp->list('johndoe');
+
+        $request = $this->responses->getLastRequest();
+        $this->assertEquals('GET', $request->getMethod());
+        $this->assertEquals('/v2/brancher/app/johndoe/', $request->getUri());
+        $this->assertEquals([], $branchers);
+    }
+
+    public function testListBrancherAppRaisesClientExceptions()
+    {
+        $badRequestResponse = new Response(400, [], json_encode([
+            'non_field_errors' => ['Your request was invalid.']
+        ]));
+        $this->responses->append($badRequestResponse);
+
+        $this->expectExceptionObject(new HypernodeApiClientException($badRequestResponse));
+
+        $this->client->brancherApp->list('johndoe');
+    }
+
+    public function testListBrancherAppRaisesServerExceptions()
+    {
+        $badRequestResponse = new Response(500, [], json_encode([
+            'non_field_errors' => ['Something went wrong processing your request.']
+        ]));
+        $this->responses->append($badRequestResponse);
+
+        $this->expectExceptionObject(new HypernodeApiServerException($badRequestResponse));
+
+        $this->client->brancherApp->list('johndoe');
+    }
+
     public function testCreateBrancherApp()
     {
         $this->responses->append(
