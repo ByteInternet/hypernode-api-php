@@ -20,7 +20,7 @@ class BrancherApp extends AbstractService
      */
     public function list(string $app, ?array $data = null): array
     {
-        $url = sprintf(App::V2_APP_BRANCHER_URL, $app);
+        $url = sprintf(App::V2_BRANCHER_APP_URL, $app);
 
         $response = $this->client->api->get($url, [], $data ? json_encode($data) : null);
 
@@ -42,7 +42,7 @@ class BrancherApp extends AbstractService
      */
     public function create(string $app, ?array $data = null): string
     {
-        $url = sprintf(App::V2_APP_BRANCHER_URL, $app);
+        $url = sprintf(App::V2_BRANCHER_APP_URL, $app);
 
         $response = $this->client->api->post($url, [], $data ? json_encode($data) : null);
 
