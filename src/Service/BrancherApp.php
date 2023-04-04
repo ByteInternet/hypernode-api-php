@@ -60,13 +60,22 @@ class BrancherApp extends AbstractService
      *
      * @param string $name Name of the Brancher node
      * @param array $data Data to be updated
+     * @param bool $appendLabels Whether to append labels or to overwrite
      * @return array Updated data
      * @throws HypernodeApiClientException
      * @throws HypernodeApiServerException
      */
-    public function update(string $name, array $data): array
+    public function update(string $name, array $data, bool $appendLabels = false): array
     {
         $url = sprintf(App::V2_BRANCHER_DETAIL_URL, $name);
+        
+        if ($appendLabels) {
+            $originHypernode = substr($name, 0, strrpos($name, '-'));
+            $existingLabels = $this->list($originHypernode)[0]['labels'] ?? [];
+            foreach (explode('&', http_build_query($existingLabels)) as $label) {
+                $data['labels'][] = $label;
+            }
+        }
 
         $response = $this->client->api->put($url, [], json_encode($data));
 
