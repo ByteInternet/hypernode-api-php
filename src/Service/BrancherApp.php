@@ -54,6 +54,31 @@ class BrancherApp extends AbstractService
     }
 
     /**
+     * Update a Brancher app.
+     *
+     * Currently, only the `labels` field is supported.
+     *
+     * @param string $name Name of the Brancher node
+     * @param array $data Data to be updated
+     * @return array Updated data
+     * @throws HypernodeApiClientException
+     * @throws HypernodeApiServerException
+     */
+    public function update(string $name, array $data): array
+    {
+        $url = sprintf(App::V2_BRANCHER_DETAIL_URL, $name);
+
+        $response = $this->client->api->put($url, [], json_encode($data));
+
+        $this->client->maybeThrowApiExceptions($response);
+
+        /** @var array $data */
+        $data = $this->client->getJsonFromResponse($response);
+
+        return $data;
+    }
+
+    /**
      * Cancel an brancher app.
      *
      * @param string $app Name of the brancher app

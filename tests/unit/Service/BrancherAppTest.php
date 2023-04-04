@@ -158,4 +158,52 @@ class BrancherAppTest extends HypernodeClientTestCase
 
         $this->client->brancherApp->cancel('johndoe');
     }
+
+    public function testUpdateBrancherApp()
+    {
+        $this->responses->append(
+            new Response(200, [], json_encode([
+                'labels' => ['somekey' => 'somevalue']
+            ])),
+        );
+
+        $result = $this->client->brancherApp->update('johndoe-eph123456', ['labels' => ['somekey=somevalue']]);
+
+        $request = $this->responses->getLastRequest();
+        $this->assertEquals('PUT', $request->getMethod());
+        $this->assertEquals('/v2/brancher/johndoe-eph123456/', $request->getUri());
+        $this->assertJson((string)$request->getBody());
+        $this->assertEquals(
+            ['labels' => ['somekey=somevalue']],
+            json_decode((string)$request->getBody(), true)
+        );
+        $this->assertEquals(
+            ['labels' => ['somekey' => 'somevalue']],
+            $result
+        );
+    }
+
+    public function testUpdateBrancherAppRaisesClientExceptions()
+    {
+        $badRequestResponse = new Response(400, [], json_encode([
+            'non_field_errors' => ['Your request was invalid.']
+        ]));
+        $this->responses->append($badRequestResponse);
+
+        $this->expectExceptionObject(new HypernodeApiClientException($badRequestResponse));
+
+        $this->client->brancherApp->update('johndoe', ['labels' => []]);
+    }
+
+    public function testUpdateBrancherAppRaisesServerExceptions()
+    {
+        $badRequestResponse = new Response(500, [], json_encode([
+            'non_field_errors' => ['Something went wrong processing your request.']
+        ]));
+        $this->responses->append($badRequestResponse);
+
+        $this->expectExceptionObject(new HypernodeApiServerException($badRequestResponse));
+
+        $this->client->brancherApp->update('johndoe', ['labels' => []]);
+    }
 }
