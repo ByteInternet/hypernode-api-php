@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace Hypernode\Api\Service;
 
+use Hypernode\Api\Defaults;
 use Hypernode\Api\Resource\Logbook\Job;
 
 class Settings extends AbstractService
 {
+    public const JOB_URL_REGEX = '#' . Defaults::HYPERNODE_API_URL. 'logbook/v1/jobs/(.*)/#';
+
     public function set(string $app, string $key, string $value): ?Job
     {
         return $this->setBatch($app, [$key => $value]);
@@ -21,7 +24,11 @@ class Settings extends AbstractService
         $this->client->maybeThrowApiExceptions($response);
 
         if ($response->getStatusCode() === 202) {
-            $job = new Job($this->client, $response->getHeaderLine('Location'));
+            $location = $response->getHeaderLine('Location');
+            if (!preg_match(self::JOB_URL_REGEX, $location, $matches)) {
+                return null;
+            }
+            $job = new Job($this->client, $app, $matches[1]);
             return $job;
         }
 

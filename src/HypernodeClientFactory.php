@@ -16,8 +16,6 @@ use Psr\Http\Client\ClientInterface;
 
 class HypernodeClientFactory
 {
-    public const HYPERNODE_API_URL = 'https://api.hypernode.com/';
-
     public static function create(string $authToken, ?ClientInterface $httpClient = null): HypernodeClient
     {
         $httpHeaders = [
@@ -29,7 +27,7 @@ class HypernodeClientFactory
             'Accept' => 'application/json',
             'Content-Type' => 'application/json',
         ];
-        $httpClient = self::getHttpClient(self::HYPERNODE_API_URL, $httpHeaders, $httpClient);
+        $httpClient = self::getHttpClient(Defaults::HYPERNODE_API_URL, $httpHeaders, $httpClient);
 
         $apiClient = new HttpMethodsClient(
             $httpClient, Psr17FactoryDiscovery::findRequestFactory(), Psr17FactoryDiscovery::findStreamFactory()

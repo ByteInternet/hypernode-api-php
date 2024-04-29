@@ -33,7 +33,7 @@ class SettingsTest extends HypernodeClientTestCase
     {
         $jobUrl = 'https://api.hypernode.com/logbook/v1/jobs/abcd/';
         $this->responses->append(
-            new Response(202, ['Location: ' . $jobUrl], null),
+            new Response(202, ['Location' => $jobUrl], null),
         );
 
         $job = $this->client->settings->set('johndoe', 'php_version', '8.1');
@@ -41,6 +41,7 @@ class SettingsTest extends HypernodeClientTestCase
         $request = $this->responses->getLastRequest();
 
         $this->assertNotNull($job);
+        $this->assertEquals('abcd', $job->id());
         $this->assertEquals('PATCH', $request->getMethod());
         $this->assertEquals('/v2/app/johndoe/', $request->getUri());
         $this->assertJson((string)$request->getBody());
@@ -54,7 +55,7 @@ class SettingsTest extends HypernodeClientTestCase
     {
         $jobUrl = 'https://api.hypernode.com/logbook/v1/jobs/abcd/';
         $this->responses->append(
-            new Response(202, ['Location: ' . $jobUrl], null),
+            new Response(202, ['Location' => $jobUrl], null),
         );
 
         $job = $this->client->settings->setBatch(
@@ -68,6 +69,7 @@ class SettingsTest extends HypernodeClientTestCase
         $request = $this->responses->getLastRequest();
 
         $this->assertNotNull($job);
+        $this->assertEquals('abcd', $job->id());
         $this->assertEquals('PATCH', $request->getMethod());
         $this->assertEquals('/v2/app/johndoe/', $request->getUri());
         $this->assertJson((string)$request->getBody());
