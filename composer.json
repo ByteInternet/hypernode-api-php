@@ -22,7 +22,7 @@
         "composer-runtime-api": "^2.0",
         "ext-curl": "*",
         "ext-json": "*",
-        "nesbot/carbon": "^2.0",
+        "nesbot/carbon": "^3.0",
         "psr/http-client-implementation": "^1.0",
         "php-http/client-common": "^2.5",
         "php-http/discovery": "^1.14",
