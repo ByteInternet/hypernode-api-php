@@ -9,13 +9,13 @@ jobs:
   code_quality:
     strategy:
       matrix:
-        php_version: [7.4, 8.0, 8.1]
+        php_version: [8.1, 8.2, 8.3, 8.4]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout hypernode-deploy
         uses: actions/checkout@v3
       - name: Install PHP
-        uses: shivammathur/setup-php@2.21.1
+        uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php_version }}
           tools: composer:v2
