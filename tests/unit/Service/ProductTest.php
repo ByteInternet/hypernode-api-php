@@ -70,4 +70,56 @@ class ProductTest extends HypernodeClientTestCase
 
         $this->client->product->getList();
     }
+
+    public function testGetCurrent()
+    {
+        $product = [
+            'code' => 'FALCON_S_202203',
+            'name' => 'Falcon S',
+            'backups_enabled' => true,
+            'is_development' => false,
+            'varnish_supported' => true,
+            'supports_sla' => true,
+            'price' => 1234,
+            'currency' => 'EUR',
+            'flavor' => [
+                'name' => '2CPU/8GB/60GB (Falcon S 202202)',
+                'redis_size' => '1024',
+            ],
+        ];
+        $this->responses->append(
+            new Response(200, [], json_encode($product)),
+        );
+
+        $result = $this->client->product->getCurrent('johndoe');
+
+        $request = $this->responses->getLastRequest();
+        $this->assertEquals('GET', $request->getMethod());
+        $this->assertEquals('/v2/product/app/johndoe/current/', $request->getUri());
+        $this->assertEquals($product, $result);
+    }
+
+    public function testGetCurrentRaisesClientExceptions()
+    {
+        $badRequestResponse = new Response(400, [], json_encode([
+            'non_field_errors' => ['Your request was invalid.']
+        ]));
+        $this->responses->append($badRequestResponse);
+
+        $this->expectExceptionObject(new HypernodeApiClientException($badRequestResponse));
+
+        $this->client->product->getCurrent('johndoe');
+    }
+
+    public function testGetCurrentRaisesServerExceptions()
+    {
+        $badRequestResponse = new Response(500, [], json_encode([
+            'non_field_errors' => ['Something went wrong processing your request.']
+        ]));
+        $this->responses->append($badRequestResponse);
+
+        $this->expectExceptionObject(new HypernodeApiServerException($badRequestResponse));
+
+        $this->client->product->getCurrent('johndoe');
+    }
 }
