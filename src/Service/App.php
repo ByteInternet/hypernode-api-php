@@ -14,6 +14,7 @@ class App extends AbstractService
     public const V1_APP_FLOWS_URL = "/logbook/v1/logbooks/%s/flows/";
     public const V2_APP_BLOCK_ATTACK_DESCRIPTIONS_URL = "/v2/app/block_attack_descriptions/";
     public const V2_APP_EAV_DESCRIPTIONS_URL = "/v2/app/eav_descriptions/";
+    public const V2_APP_ORDER_URL = "/v2/app/order/";
 
     /**
      * @param array $params
@@ -80,5 +81,22 @@ class App extends AbstractService
         $this->client->maybeThrowApiExceptions($response);
 
         return $this->client->getJsonFromResponse($response);
+    }
+
+    /**
+     * Order a new Hypernode under your account.
+     *
+     * @param array $data Order data, requires at least the keys
+     *  `product_code`, `app_name` and `initial_app_configuration`.
+     * @return void
+     * @throws \Http\Client\Exception
+     * @throws \Hypernode\Api\Exception\HypernodeApiClientException
+     * @throws \Hypernode\Api\Exception\HypernodeApiServerException
+     */
+    public function order(array $data): void
+    {
+        $response = $this->client->api->post(self::V2_APP_ORDER_URL, [], json_encode($data));
+
+        $this->client->maybeThrowApiExceptions($response);
     }
 }

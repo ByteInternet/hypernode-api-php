@@ -198,4 +198,48 @@ class AppTest extends HypernodeClientTestCase
 
         $this->client->app->getEavDescriptions();
     }
+
+    public function testOrder()
+    {
+        $this->responses->append(
+            new Response(201, [], null),
+        );
+
+        $orderData = [
+            'product_code' => 'FALCON_M_202203',
+            'app_name' => 'johndoe',
+            'initial_app_configuration' => 'magento_2',
+        ];
+        $this->client->app->order($orderData);
+
+        $request = $this->responses->getLastRequest();
+        $this->assertEquals('POST', $request->getMethod());
+        $this->assertEquals('/v2/app/order/', $request->getUri());
+        $this->assertJson((string)$request->getBody());
+        $this->assertEquals($orderData, json_decode((string)$request->getBody(), true));
+    }
+
+    public function testOrderRaisesClientExceptions()
+    {
+        $badRequestResponse = new Response(400, [], json_encode([
+            'non_field_errors' => ['Your request was invalid.']
+        ]));
+        $this->responses->append($badRequestResponse);
+
+        $this->expectExceptionObject(new HypernodeApiClientException($badRequestResponse));
+
+        $this->client->app->order(['product_code' => 'FALCON_M_202203']);
+    }
+
+    public function testOrderRaisesServerExceptions()
+    {
+        $badRequestResponse = new Response(500, [], json_encode([
+            'non_field_errors' => ['Something went wrong processing your request.']
+        ]));
+        $this->responses->append($badRequestResponse);
+
+        $this->expectExceptionObject(new HypernodeApiServerException($badRequestResponse));
+
+        $this->client->app->order(['product_code' => 'FALCON_M_202203']);
+    }
 }
