@@ -33,4 +33,26 @@ class Whitelist extends AbstractService
 
         return $this->client->getJsonFromResponse($response);
     }
+
+    /**
+     * Add a whitelist entry for the Hypernode.
+     *
+     * @param string $app Name of the Hypernode
+     * @param array $data Whitelist entry data, requires at least the key `ip`.
+     *  Optional keys are `type` (database, ftp, phpmyadmin, ssh or waf,
+     *  defaults to database) and `description`.
+     * @return array The created whitelist entry
+     * @throws HypernodeApiClientException
+     * @throws HypernodeApiServerException
+     */
+    public function create(string $app, array $data): array
+    {
+        $url = sprintf(self::V2_WHITELIST_URL, $app);
+
+        $response = $this->client->api->post($url, [], json_encode($data));
+
+        $this->client->maybeThrowApiExceptions($response);
+
+        return $this->client->getJsonFromResponse($response);
+    }
 }
