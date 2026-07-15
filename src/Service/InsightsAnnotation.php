@@ -10,6 +10,7 @@ use Hypernode\Api\Exception\HypernodeApiServerException;
 class InsightsAnnotation extends AbstractService
 {
     public const V2_INSIGHTS_ANNOTATION_LIST_URL = "/v2/insights-annotation/";
+    public const V2_INSIGHTS_ANNOTATION_CREATE_URL = "/v2/insights-annotation/create/";
 
     /**
      * List all custom Insights annotations for the Hypernodes you have access
@@ -44,5 +45,31 @@ class InsightsAnnotation extends AbstractService
         }
 
         return $annotations;
+    }
+
+    /**
+     * Create a custom Insights annotation for a Hypernode. The annotation is
+     * shown in the Insights graphs at the point in time given by `x_axis` (a
+     * unix timestamp in seconds). Optionally restrict the annotation to
+     * specific graphs with `metrics`, a comma-separated list of metric names;
+     * when omitted, the annotation applies to all metrics.
+     *
+     * @param array $data Annotation data, requires at least the keys
+     *  `name`, `x_axis` and `app`.
+     * @return array The created annotation
+     * @throws HypernodeApiClientException
+     * @throws HypernodeApiServerException
+     */
+    public function create(array $data): array
+    {
+        $response = $this->client->api->post(
+            self::V2_INSIGHTS_ANNOTATION_CREATE_URL,
+            [],
+            json_encode($data)
+        );
+
+        $this->client->maybeThrowApiExceptions($response);
+
+        return $this->client->getJsonFromResponse($response);
     }
 }

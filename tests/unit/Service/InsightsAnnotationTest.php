@@ -124,4 +124,55 @@ class InsightsAnnotationTest extends HypernodeClientTestCase
 
         $this->client->insightsAnnotation->getList();
     }
+
+    public function testCreate()
+    {
+        $annotationData = [
+            'name' => 'Deployed release 1.2.3',
+            'x_axis' => 1756384957,
+            'app' => 'johndoe',
+            'metrics' => 'memory_usage',
+        ];
+        $createdAnnotation = array_merge($annotationData, [
+            'id' => 123,
+            'created' => '2026-07-15T12:00:00Z',
+            'modified' => '2026-07-15T12:00:00Z',
+        ]);
+        $this->responses->append(
+            new Response(201, [], json_encode($createdAnnotation)),
+        );
+
+        $result = $this->client->insightsAnnotation->create($annotationData);
+
+        $request = $this->responses->getLastRequest();
+        $this->assertEquals('POST', $request->getMethod());
+        $this->assertEquals('/v2/insights-annotation/create/', $request->getUri());
+        $this->assertJson((string)$request->getBody());
+        $this->assertEquals($annotationData, json_decode((string)$request->getBody(), true));
+        $this->assertEquals($createdAnnotation, $result);
+    }
+
+    public function testCreateRaisesClientExceptions()
+    {
+        $badRequestResponse = new Response(400, [], json_encode([
+            'non_field_errors' => ['Your request was invalid.']
+        ]));
+        $this->responses->append($badRequestResponse);
+
+        $this->expectExceptionObject(new HypernodeApiClientException($badRequestResponse));
+
+        $this->client->insightsAnnotation->create(['name' => 'Deployed release 1.2.3']);
+    }
+
+    public function testCreateRaisesServerExceptions()
+    {
+        $badRequestResponse = new Response(500, [], json_encode([
+            'non_field_errors' => ['Something went wrong processing your request.']
+        ]));
+        $this->responses->append($badRequestResponse);
+
+        $this->expectExceptionObject(new HypernodeApiServerException($badRequestResponse));
+
+        $this->client->insightsAnnotation->create(['name' => 'Deployed release 1.2.3']);
+    }
 }
