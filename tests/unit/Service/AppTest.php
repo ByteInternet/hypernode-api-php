@@ -156,4 +156,46 @@ class AppTest extends HypernodeClientTestCase
 
         $this->client->app->getBlockAttackDescriptions();
     }
+
+    public function testGetEavDescriptions()
+    {
+        $descriptions = [
+            'php_version' => 'The PHP version of the Hypernode',
+            'nodejs_version' => 'The Node.js version of the Hypernode',
+        ];
+        $this->responses->append(
+            new Response(200, [], json_encode($descriptions)),
+        );
+
+        $result = $this->client->app->getEavDescriptions();
+
+        $request = $this->responses->getLastRequest();
+        $this->assertEquals('GET', $request->getMethod());
+        $this->assertEquals('/v2/app/eav_descriptions/', $request->getUri());
+        $this->assertEquals($descriptions, $result);
+    }
+
+    public function testGetEavDescriptionsRaisesClientExceptions()
+    {
+        $badRequestResponse = new Response(400, [], json_encode([
+            'non_field_errors' => ['Your request was invalid.']
+        ]));
+        $this->responses->append($badRequestResponse);
+
+        $this->expectExceptionObject(new HypernodeApiClientException($badRequestResponse));
+
+        $this->client->app->getEavDescriptions();
+    }
+
+    public function testGetEavDescriptionsRaisesServerExceptions()
+    {
+        $badRequestResponse = new Response(500, [], json_encode([
+            'non_field_errors' => ['Something went wrong processing your request.']
+        ]));
+        $this->responses->append($badRequestResponse);
+
+        $this->expectExceptionObject(new HypernodeApiServerException($badRequestResponse));
+
+        $this->client->app->getEavDescriptions();
+    }
 }

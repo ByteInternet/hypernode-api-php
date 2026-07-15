@@ -13,6 +13,7 @@ class App extends AbstractService
     public const V2_BRANCHER_DETAIL_URL = "/v2/brancher/%s/";
     public const V1_APP_FLOWS_URL = "/logbook/v1/logbooks/%s/flows/";
     public const V2_APP_BLOCK_ATTACK_DESCRIPTIONS_URL = "/v2/app/block_attack_descriptions/";
+    public const V2_APP_EAV_DESCRIPTIONS_URL = "/v2/app/eav_descriptions/";
 
     /**
      * @param array $params
@@ -57,6 +58,24 @@ class App extends AbstractService
     public function getBlockAttackDescriptions(): array
     {
         $response = $this->client->api->get(self::V2_APP_BLOCK_ATTACK_DESCRIPTIONS_URL);
+
+        $this->client->maybeThrowApiExceptions($response);
+
+        return $this->client->getJsonFromResponse($response);
+    }
+
+    /**
+     * Show the available EAVs (entity-attribute values) that can be changed
+     * using the settings service.
+     *
+     * @return array Map of setting names to their descriptions
+     * @throws \Http\Client\Exception
+     * @throws \Hypernode\Api\Exception\HypernodeApiClientException
+     * @throws \Hypernode\Api\Exception\HypernodeApiServerException
+     */
+    public function getEavDescriptions(): array
+    {
+        $response = $this->client->api->get(self::V2_APP_EAV_DESCRIPTIONS_URL);
 
         $this->client->maybeThrowApiExceptions($response);
 
