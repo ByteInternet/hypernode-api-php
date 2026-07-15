@@ -51,6 +51,14 @@ Here's a list of Hypernode API features implemented in the client.
 - Updating one or multiple Hypernode settings at once.
 - Querying/polling the logbook for the status of a job.
 - Listing, creating, updating and cancelling Brancher Hypernode instances.
+- Ordering a new Hypernode.
+- Listing and creating backups.
+- Listing, creating and deleting whitelist entries.
+- Listing products and retrieving the current product of a Hypernode.
+- Listing SLA addons.
+- Listing available preinstall configurations.
+- Listing available settings (EAV descriptions) and block attack descriptions.
+- Listing and creating Insights annotations.
 
 ## Related projects
 
