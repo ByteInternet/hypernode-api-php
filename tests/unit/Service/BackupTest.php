@@ -131,4 +131,42 @@ class BackupTest extends HypernodeClientTestCase
 
         $this->client->backup->getList('johndoe');
     }
+
+    public function testCreate()
+    {
+        $this->responses->append(
+            new Response(200, [], json_encode('Backup creation initiated')),
+        );
+
+        $result = $this->client->backup->create('johndoe');
+
+        $request = $this->responses->getLastRequest();
+        $this->assertEquals('POST', $request->getMethod());
+        $this->assertEquals('/v2/app/johndoe/backup/', $request->getUri());
+        $this->assertEquals('Backup creation initiated', $result);
+    }
+
+    public function testCreateRaisesClientExceptions()
+    {
+        $badRequestResponse = new Response(400, [], json_encode(
+            'Creating backups requires sla-standard to be enabled.'
+        ));
+        $this->responses->append($badRequestResponse);
+
+        $this->expectExceptionObject(new HypernodeApiClientException($badRequestResponse));
+
+        $this->client->backup->create('johndoe');
+    }
+
+    public function testCreateRaisesServerExceptions()
+    {
+        $badRequestResponse = new Response(500, [], json_encode([
+            'non_field_errors' => ['Something went wrong processing your request.']
+        ]));
+        $this->responses->append($badRequestResponse);
+
+        $this->expectExceptionObject(new HypernodeApiServerException($badRequestResponse));
+
+        $this->client->backup->create('johndoe');
+    }
 }

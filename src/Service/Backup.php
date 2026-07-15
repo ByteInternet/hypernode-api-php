@@ -44,4 +44,24 @@ class Backup extends AbstractService
 
         return $backups;
     }
+
+    /**
+     * Create a new snapshot backup. This requires sla-standard to be enabled
+     * on the Hypernode.
+     *
+     * @param string $app Name of the Hypernode
+     * @return string Response message
+     * @throws HypernodeApiClientException
+     * @throws HypernodeApiServerException
+     */
+    public function create(string $app): string
+    {
+        $url = sprintf(self::V2_APP_BACKUP_URL, $app);
+
+        $response = $this->client->api->post($url);
+
+        $this->client->maybeThrowApiExceptions($response);
+
+        return $this->client->getJsonFromResponse($response);
+    }
 }
