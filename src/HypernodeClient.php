@@ -12,6 +12,7 @@ use Hypernode\Api\Service\App;
 use Hypernode\Api\Service\Backup;
 use Hypernode\Api\Service\BrancherApp;
 use Hypernode\Api\Service\Configuration;
+use Hypernode\Api\Service\InsightsAnnotation;
 use Hypernode\Api\Service\Logbook;
 use Hypernode\Api\Service\Settings;
 use Psr\Http\Message\ResponseInterface;
@@ -24,6 +25,7 @@ class HypernodeClient
     public Backup $backup;
     public BrancherApp $brancherApp;
     public Configuration $configuration;
+    public InsightsAnnotation $insightsAnnotation;
     public Settings $settings;
     public Logbook $logbook;
 
@@ -35,6 +37,7 @@ class HypernodeClient
         $this->backup = new Backup($this);
         $this->brancherApp = new BrancherApp($this);
         $this->configuration = new Configuration($this);
+        $this->insightsAnnotation = new InsightsAnnotation($this);
         $this->settings = new Settings($this);
         $this->logbook = new Logbook($this);
     }
