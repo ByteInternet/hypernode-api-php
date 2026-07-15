@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Hypernode\Api\Service;
 
 use GuzzleHttp\Psr7\Response;
+use Hypernode\Api\Exception\HypernodeApiClientException;
+use Hypernode\Api\Exception\HypernodeApiServerException;
 use Hypernode\Api\HypernodeClientTestCase;
 
 class AppTest extends HypernodeClientTestCase
@@ -111,5 +113,133 @@ class AppTest extends HypernodeClientTestCase
         $request = $this->responses->getLastRequest();
         $this->assertEquals('GET', $request->getMethod());
         $this->assertEquals('https://api.hypernode.com/v2/app/?limit=1&offset=1', $request->getUri());
+    }
+
+    public function testGetBlockAttackDescriptions()
+    {
+        $descriptions = [
+            'BlockSqliBruteForce' => 'Attempts to deploy NGINX rules to block suspected (blind) SQL injection attack',
+            'BlockChinaBruteForce' => 'Attempts to deploy NGINX rules to block brute force attacks from China',
+        ];
+        $this->responses->append(
+            new Response(200, [], json_encode($descriptions)),
+        );
+
+        $result = $this->client->app->getBlockAttackDescriptions();
+
+        $request = $this->responses->getLastRequest();
+        $this->assertEquals('GET', $request->getMethod());
+        $this->assertEquals('/v2/app/block_attack_descriptions/', $request->getUri());
+        $this->assertEquals($descriptions, $result);
+    }
+
+    public function testGetBlockAttackDescriptionsRaisesClientExceptions()
+    {
+        $badRequestResponse = new Response(400, [], json_encode([
+            'non_field_errors' => ['Your request was invalid.']
+        ]));
+        $this->responses->append($badRequestResponse);
+
+        $this->expectExceptionObject(new HypernodeApiClientException($badRequestResponse));
+
+        $this->client->app->getBlockAttackDescriptions();
+    }
+
+    public function testGetBlockAttackDescriptionsRaisesServerExceptions()
+    {
+        $badRequestResponse = new Response(500, [], json_encode([
+            'non_field_errors' => ['Something went wrong processing your request.']
+        ]));
+        $this->responses->append($badRequestResponse);
+
+        $this->expectExceptionObject(new HypernodeApiServerException($badRequestResponse));
+
+        $this->client->app->getBlockAttackDescriptions();
+    }
+
+    public function testGetEavDescriptions()
+    {
+        $descriptions = [
+            'php_version' => 'The PHP version of the Hypernode',
+            'nodejs_version' => 'The Node.js version of the Hypernode',
+        ];
+        $this->responses->append(
+            new Response(200, [], json_encode($descriptions)),
+        );
+
+        $result = $this->client->app->getEavDescriptions();
+
+        $request = $this->responses->getLastRequest();
+        $this->assertEquals('GET', $request->getMethod());
+        $this->assertEquals('/v2/app/eav_descriptions/', $request->getUri());
+        $this->assertEquals($descriptions, $result);
+    }
+
+    public function testGetEavDescriptionsRaisesClientExceptions()
+    {
+        $badRequestResponse = new Response(400, [], json_encode([
+            'non_field_errors' => ['Your request was invalid.']
+        ]));
+        $this->responses->append($badRequestResponse);
+
+        $this->expectExceptionObject(new HypernodeApiClientException($badRequestResponse));
+
+        $this->client->app->getEavDescriptions();
+    }
+
+    public function testGetEavDescriptionsRaisesServerExceptions()
+    {
+        $badRequestResponse = new Response(500, [], json_encode([
+            'non_field_errors' => ['Something went wrong processing your request.']
+        ]));
+        $this->responses->append($badRequestResponse);
+
+        $this->expectExceptionObject(new HypernodeApiServerException($badRequestResponse));
+
+        $this->client->app->getEavDescriptions();
+    }
+
+    public function testOrder()
+    {
+        $this->responses->append(
+            new Response(201, [], null),
+        );
+
+        $orderData = [
+            'product_code' => 'FALCON_M_202203',
+            'app_name' => 'johndoe',
+            'initial_app_configuration' => 'magento_2',
+        ];
+        $this->client->app->order($orderData);
+
+        $request = $this->responses->getLastRequest();
+        $this->assertEquals('POST', $request->getMethod());
+        $this->assertEquals('/v2/app/order/', $request->getUri());
+        $this->assertJson((string)$request->getBody());
+        $this->assertEquals($orderData, json_decode((string)$request->getBody(), true));
+    }
+
+    public function testOrderRaisesClientExceptions()
+    {
+        $badRequestResponse = new Response(400, [], json_encode([
+            'non_field_errors' => ['Your request was invalid.']
+        ]));
+        $this->responses->append($badRequestResponse);
+
+        $this->expectExceptionObject(new HypernodeApiClientException($badRequestResponse));
+
+        $this->client->app->order(['product_code' => 'FALCON_M_202203']);
+    }
+
+    public function testOrderRaisesServerExceptions()
+    {
+        $badRequestResponse = new Response(500, [], json_encode([
+            'non_field_errors' => ['Something went wrong processing your request.']
+        ]));
+        $this->responses->append($badRequestResponse);
+
+        $this->expectExceptionObject(new HypernodeApiServerException($badRequestResponse));
+
+        $this->client->app->order(['product_code' => 'FALCON_M_202203']);
     }
 }

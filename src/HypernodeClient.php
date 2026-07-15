@@ -7,27 +7,45 @@ namespace Hypernode\Api;
 use Http\Client\Common\HttpMethodsClientInterface;
 use Hypernode\Api\Exception\HypernodeApiClientException;
 use Hypernode\Api\Exception\HypernodeApiServerException;
+use Hypernode\Api\Service\Addon;
 use Hypernode\Api\Service\App;
+use Hypernode\Api\Service\Backup;
 use Hypernode\Api\Service\BrancherApp;
+use Hypernode\Api\Service\Configuration;
+use Hypernode\Api\Service\InsightsAnnotation;
 use Hypernode\Api\Service\Logbook;
+use Hypernode\Api\Service\Product;
 use Hypernode\Api\Service\Settings;
+use Hypernode\Api\Service\Whitelist;
 use Psr\Http\Message\ResponseInterface;
 
 class HypernodeClient
 {
     public HttpMethodsClientInterface $api;
+    public Addon $addon;
     public App $app;
+    public Backup $backup;
     public BrancherApp $brancherApp;
+    public Configuration $configuration;
+    public InsightsAnnotation $insightsAnnotation;
+    public Product $product;
     public Settings $settings;
     public Logbook $logbook;
+    public Whitelist $whitelist;
 
     public function __construct(HttpMethodsClientInterface $apiClient)
     {
         $this->api = $apiClient;
+        $this->addon = new Addon($this);
         $this->app = new App($this);
+        $this->backup = new Backup($this);
         $this->brancherApp = new BrancherApp($this);
+        $this->configuration = new Configuration($this);
+        $this->insightsAnnotation = new InsightsAnnotation($this);
+        $this->product = new Product($this);
         $this->settings = new Settings($this);
         $this->logbook = new Logbook($this);
+        $this->whitelist = new Whitelist($this);
     }
 
     public function getJsonFromResponse(ResponseInterface $response)
