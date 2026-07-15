@@ -16,6 +16,7 @@ use Hypernode\Api\Service\InsightsAnnotation;
 use Hypernode\Api\Service\Logbook;
 use Hypernode\Api\Service\Product;
 use Hypernode\Api\Service\Settings;
+use Hypernode\Api\Service\Whitelist;
 use Psr\Http\Message\ResponseInterface;
 
 class HypernodeClient
@@ -30,6 +31,7 @@ class HypernodeClient
     public Product $product;
     public Settings $settings;
     public Logbook $logbook;
+    public Whitelist $whitelist;
 
     public function __construct(HttpMethodsClientInterface $apiClient)
     {
@@ -43,6 +45,7 @@ class HypernodeClient
         $this->product = new Product($this);
         $this->settings = new Settings($this);
         $this->logbook = new Logbook($this);
+        $this->whitelist = new Whitelist($this);
     }
 
     public function getJsonFromResponse(ResponseInterface $response)

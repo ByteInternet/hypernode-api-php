@@ -1,0 +1,36 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Hypernode\Api\Service;
+
+use Hypernode\Api\Exception\HypernodeApiClientException;
+use Hypernode\Api\Exception\HypernodeApiServerException;
+
+class Whitelist extends AbstractService
+{
+    public const V2_WHITELIST_URL = "/v2/whitelist/%s/";
+
+    /**
+     * Get all whitelist entries for the Hypernode.
+     *
+     * @param string $app Name of the Hypernode
+     * @param array $params Query parameters to filter the results, e.g. ['type' => 'waf']
+     * @return array List of whitelist entries
+     * @throws HypernodeApiClientException
+     * @throws HypernodeApiServerException
+     */
+    public function getList(string $app, array $params = []): array
+    {
+        $url = sprintf(self::V2_WHITELIST_URL, $app);
+        if ($params) {
+            $url .= '?' . http_build_query($params);
+        }
+
+        $response = $this->client->api->get($url);
+
+        $this->client->maybeThrowApiExceptions($response);
+
+        return $this->client->getJsonFromResponse($response);
+    }
+}
