@@ -122,4 +122,44 @@ class WhitelistTest extends HypernodeClientTestCase
 
         $this->client->whitelist->create('johndoe', ['ip' => '1.2.3.4']);
     }
+
+    public function testDelete()
+    {
+        $this->responses->append(
+            new Response(204, [], null),
+        );
+
+        $entryData = ['ip' => '1.2.3.4', 'type' => 'waf'];
+        $this->client->whitelist->delete('johndoe', $entryData);
+
+        $request = $this->responses->getLastRequest();
+        $this->assertEquals('DELETE', $request->getMethod());
+        $this->assertEquals('/v2/whitelist/johndoe/', $request->getUri());
+        $this->assertJson((string)$request->getBody());
+        $this->assertEquals($entryData, json_decode((string)$request->getBody(), true));
+    }
+
+    public function testDeleteRaisesClientExceptions()
+    {
+        $badRequestResponse = new Response(400, [], json_encode([
+            'non_field_errors' => ['Your request was invalid.']
+        ]));
+        $this->responses->append($badRequestResponse);
+
+        $this->expectExceptionObject(new HypernodeApiClientException($badRequestResponse));
+
+        $this->client->whitelist->delete('johndoe', ['ip' => '1.2.3.4']);
+    }
+
+    public function testDeleteRaisesServerExceptions()
+    {
+        $badRequestResponse = new Response(500, [], json_encode([
+            'non_field_errors' => ['Something went wrong processing your request.']
+        ]));
+        $this->responses->append($badRequestResponse);
+
+        $this->expectExceptionObject(new HypernodeApiServerException($badRequestResponse));
+
+        $this->client->whitelist->delete('johndoe', ['ip' => '1.2.3.4']);
+    }
 }

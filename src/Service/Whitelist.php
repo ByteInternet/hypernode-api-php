@@ -55,4 +55,23 @@ class Whitelist extends AbstractService
 
         return $this->client->getJsonFromResponse($response);
     }
+
+    /**
+     * Remove a whitelist entry for the Hypernode.
+     *
+     * @param string $app Name of the Hypernode
+     * @param array $data Data identifying the entry to remove, e.g.
+     *  ['ip' => '1.2.3.4', 'type' => 'waf']
+     * @return void
+     * @throws HypernodeApiClientException
+     * @throws HypernodeApiServerException
+     */
+    public function delete(string $app, array $data): void
+    {
+        $url = sprintf(self::V2_WHITELIST_URL, $app);
+
+        $response = $this->client->api->delete($url, [], json_encode($data));
+
+        $this->client->maybeThrowApiExceptions($response);
+    }
 }
