@@ -14,6 +14,7 @@ use Hypernode\Api\Service\BrancherApp;
 use Hypernode\Api\Service\Configuration;
 use Hypernode\Api\Service\InsightsAnnotation;
 use Hypernode\Api\Service\Logbook;
+use Hypernode\Api\Service\Product;
 use Hypernode\Api\Service\Settings;
 use Psr\Http\Message\ResponseInterface;
 
@@ -26,6 +27,7 @@ class HypernodeClient
     public BrancherApp $brancherApp;
     public Configuration $configuration;
     public InsightsAnnotation $insightsAnnotation;
+    public Product $product;
     public Settings $settings;
     public Logbook $logbook;
 
@@ -38,6 +40,7 @@ class HypernodeClient
         $this->brancherApp = new BrancherApp($this);
         $this->configuration = new Configuration($this);
         $this->insightsAnnotation = new InsightsAnnotation($this);
+        $this->product = new Product($this);
         $this->settings = new Settings($this);
         $this->logbook = new Logbook($this);
     }
