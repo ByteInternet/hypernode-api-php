@@ -7,6 +7,7 @@ namespace Hypernode\Api;
 use Http\Client\Common\HttpMethodsClientInterface;
 use Hypernode\Api\Exception\HypernodeApiClientException;
 use Hypernode\Api\Exception\HypernodeApiServerException;
+use Hypernode\Api\Service\Addon;
 use Hypernode\Api\Service\App;
 use Hypernode\Api\Service\BrancherApp;
 use Hypernode\Api\Service\Logbook;
@@ -16,6 +17,7 @@ use Psr\Http\Message\ResponseInterface;
 class HypernodeClient
 {
     public HttpMethodsClientInterface $api;
+    public Addon $addon;
     public App $app;
     public BrancherApp $brancherApp;
     public Settings $settings;
@@ -24,6 +26,7 @@ class HypernodeClient
     public function __construct(HttpMethodsClientInterface $apiClient)
     {
         $this->api = $apiClient;
+        $this->addon = new Addon($this);
         $this->app = new App($this);
         $this->brancherApp = new BrancherApp($this);
         $this->settings = new Settings($this);
