@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Hypernode\Api\Service;
 
 use GuzzleHttp\Psr7\Response;
+use Hypernode\Api\Exception\HypernodeApiClientException;
+use Hypernode\Api\Exception\HypernodeApiServerException;
 use Hypernode\Api\HypernodeClientTestCase;
 
 class AppTest extends HypernodeClientTestCase
@@ -111,5 +113,47 @@ class AppTest extends HypernodeClientTestCase
         $request = $this->responses->getLastRequest();
         $this->assertEquals('GET', $request->getMethod());
         $this->assertEquals('https://api.hypernode.com/v2/app/?limit=1&offset=1', $request->getUri());
+    }
+
+    public function testGetBlockAttackDescriptions()
+    {
+        $descriptions = [
+            'BlockSqliBruteForce' => 'Attempts to deploy NGINX rules to block suspected (blind) SQL injection attack',
+            'BlockChinaBruteForce' => 'Attempts to deploy NGINX rules to block brute force attacks from China',
+        ];
+        $this->responses->append(
+            new Response(200, [], json_encode($descriptions)),
+        );
+
+        $result = $this->client->app->getBlockAttackDescriptions();
+
+        $request = $this->responses->getLastRequest();
+        $this->assertEquals('GET', $request->getMethod());
+        $this->assertEquals('/v2/app/block_attack_descriptions/', $request->getUri());
+        $this->assertEquals($descriptions, $result);
+    }
+
+    public function testGetBlockAttackDescriptionsRaisesClientExceptions()
+    {
+        $badRequestResponse = new Response(400, [], json_encode([
+            'non_field_errors' => ['Your request was invalid.']
+        ]));
+        $this->responses->append($badRequestResponse);
+
+        $this->expectExceptionObject(new HypernodeApiClientException($badRequestResponse));
+
+        $this->client->app->getBlockAttackDescriptions();
+    }
+
+    public function testGetBlockAttackDescriptionsRaisesServerExceptions()
+    {
+        $badRequestResponse = new Response(500, [], json_encode([
+            'non_field_errors' => ['Something went wrong processing your request.']
+        ]));
+        $this->responses->append($badRequestResponse);
+
+        $this->expectExceptionObject(new HypernodeApiServerException($badRequestResponse));
+
+        $this->client->app->getBlockAttackDescriptions();
     }
 }

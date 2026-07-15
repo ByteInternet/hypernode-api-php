@@ -12,6 +12,7 @@ class App extends AbstractService
     public const V2_BRANCHER_APP_URL = "/v2/brancher/app/%s/";
     public const V2_BRANCHER_DETAIL_URL = "/v2/brancher/%s/";
     public const V1_APP_FLOWS_URL = "/logbook/v1/logbooks/%s/flows/";
+    public const V2_APP_BLOCK_ATTACK_DESCRIPTIONS_URL = "/v2/app/block_attack_descriptions/";
 
     /**
      * @param array $params
@@ -43,5 +44,22 @@ class App extends AbstractService
         }
 
         return $apps;
+    }
+
+    /**
+     * Show the available blocks that can be triggered using the block attack endpoint.
+     *
+     * @return array Map of attack names to their descriptions
+     * @throws \Http\Client\Exception
+     * @throws \Hypernode\Api\Exception\HypernodeApiClientException
+     * @throws \Hypernode\Api\Exception\HypernodeApiServerException
+     */
+    public function getBlockAttackDescriptions(): array
+    {
+        $response = $this->client->api->get(self::V2_APP_BLOCK_ATTACK_DESCRIPTIONS_URL);
+
+        $this->client->maybeThrowApiExceptions($response);
+
+        return $this->client->getJsonFromResponse($response);
     }
 }
