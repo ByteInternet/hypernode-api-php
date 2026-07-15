@@ -9,6 +9,7 @@ use Hypernode\Api\Exception\HypernodeApiClientException;
 use Hypernode\Api\Exception\HypernodeApiServerException;
 use Hypernode\Api\Service\Addon;
 use Hypernode\Api\Service\App;
+use Hypernode\Api\Service\Backup;
 use Hypernode\Api\Service\BrancherApp;
 use Hypernode\Api\Service\Logbook;
 use Hypernode\Api\Service\Settings;
@@ -19,6 +20,7 @@ class HypernodeClient
     public HttpMethodsClientInterface $api;
     public Addon $addon;
     public App $app;
+    public Backup $backup;
     public BrancherApp $brancherApp;
     public Settings $settings;
     public Logbook $logbook;
@@ -28,6 +30,7 @@ class HypernodeClient
         $this->api = $apiClient;
         $this->addon = new Addon($this);
         $this->app = new App($this);
+        $this->backup = new Backup($this);
         $this->brancherApp = new BrancherApp($this);
         $this->settings = new Settings($this);
         $this->logbook = new Logbook($this);
